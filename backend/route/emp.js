@@ -5,6 +5,16 @@ const path = require("path");
 
 const Employee = require('../model/employe');
 
+const route = express.Router();
+
+
+// Mock user database
+const users = [
+  { id: 1, userName: 'admin', password: '123' }
+];
+
+
+//  checkDuplicateEmail middleware
 
 const checkDuplicateEmail = async (req, res, next) => {
     try {
@@ -21,11 +31,6 @@ const checkDuplicateEmail = async (req, res, next) => {
   
 
 
-const route = express.Router();
-// Mock user database
-const users = [
-    { id: 1, userName: 'admin', password: '123' }
-  ];
 
 
 const GetDate=()=>{
@@ -35,13 +40,13 @@ const GetDate=()=>{
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
   
-  // This arrangement can be altered based on how we want the date's format to appear.
+
   let currentDate = `${day}/${month}/${year}`;
   return currentDate
   }
 
 
-  // Authentication endpoint
+  // login endpoint
 route.post('/login', (req, res) => {
     const { userName, password } = req.body;
     console.log(userName, password)
@@ -50,9 +55,8 @@ route.post('/login', (req, res) => {
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
-  
-    res.json({ user });
-    res.status(200).json({ message: 'user login successfully' });
+    console.log(user)
+    res.status(200).json({ message: 'user login successfully', user });
   });
   
 
@@ -62,7 +66,7 @@ const storage = multer.diskStorage({
     cb(null, './Public/EmpImage/'); // Upload files to the 'EmpImage' directory
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Rename files to avoid conflicts
+    cb(null, Date.now() + path.extname(file.originalname)); 
   }
 });
 
@@ -79,7 +83,7 @@ route.get("/employees", async (req, res) => {
   }
 });
 
-
+//  Fetch single employee
 route.get("/singleemployees/:id", async (req, res) => {
     try {
         const id=req.params.id
@@ -160,6 +164,6 @@ route.delete('/employee/:id', async (req, res) => {
   }
 });
 
-// Other routes...
+
 
 module.exports = route;

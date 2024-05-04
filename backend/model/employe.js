@@ -6,9 +6,9 @@ const employeeSchema = new mongoose.Schema({
     email: { type: String , unique: true },
     mobileNo: { type: Number },
     gender: { type: String },
-    course: { type: Array }, // Assuming course is an array of strings
+    course: { type: Array }, 
     designation: { type: String },
-    date: { type: Date, default: Date.now }, // Assuming date is a date field with default value
+    date: { type: Date, default: Date.now }, 
     photo: { type: String }
 });
 
